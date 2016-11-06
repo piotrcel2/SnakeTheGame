@@ -13,10 +13,18 @@ body {
 }
 
 .pointsbox {
+    
     margin: auto;
     width: 256px;
     margin-top: 100px;
     
+}
+
+#infobox {
+    
+    margin: auto;
+    width: 256px;
+    text-align: center;
 }
 
 .container {
@@ -39,5 +47,33 @@ body {
     
     width: 16px;
     height: 100%;
+    border-bottom: 1px solid burlywood;
+    border-right: 1px solid burlywood; /* na koniec zdejmij siatke!!!! */
     
+}
+
+#startbutton:hover {
+	color: crimson;
+    cursor: pointer;
+}
+
+.lvl:hover {
+    color: crimson;
+    cursor: pointer;
+}
+
+
+#errorbox {
+    
+    color:crimson;
+    
+}
+
+.shown {
+    
+}
+
+.hidden {
+    
+    display: none;
 }
