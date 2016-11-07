@@ -4,43 +4,43 @@ document.addEventListener("DOMContentLoaded", function(){
     var startbutton = document.getElementById("startbutton");
     var levelbuttons = document.getElementsByClassName("lvl");
     var infobox = document.getElementById("infobox");
+    var pointsbox = document.getElementById("points");
     
     var timeon; // deklaracja zmiennej odpowiedzialną za funkcję interwałową
     
     var points = 0;
     var direction = 1; // 1-up, 2-right, 3-down, 4-left
+    var lastmovedirection = 1;  // ma zapobiec przełączeniu ruchu typu 'prawo -> dół,lewo między ruchem węża) zapamiętuje ostatni krok
     var gamestart = false;
     var gameisover = false;
-    var leveltime = 0;
-    var level = 0;
+    var leveltime = 0;      // zmienna wyznaczająca czas (ms) między ruchami węża
+    var level = 0;          // poziom trudności, wyznacza ilość punktów za jedzonko
     
-    var snake = [];
+    var snake = [];         // pierwotne współrzędne węża
     
     snake[0] = [11, 7];     // - snake[0] = głowa węża                          -- współrzędne w kolejności -Y X
     snake[1] = [12, 7];     // - snake[snake.length-2] = przedostatni element               czyli rząd -> kolumna
     snake[2] = [13, 7];     // - snake[snake.length-1] = dupa węża 
     
-    console.log(snake);
-    
     
     var snakehead = snake[0];
-    var snaketail = snake[snake.length-1];      // oznaczenie snakehead i snaketail!!!!
+    var snaketail = snake[snake.length-1];      // oznaczenie pierwszego i ostatniego elementu
     
-    function refreshsnake(){            // wywołuj gdy potrzeba!
-        snakehead = snake[0];                   // to samo co wyżej
+    function refreshsnake(){                    // to samo co wyżej, pozwoli na proste odświeżenie, wywoływuj przy aktualizacji
+        snakehead = snake[0];                   
         snaketail = snake[snake.length-1];
     }
     
     
-    var snakeisfed = 0;             // każda liczba zatrzymuje ruch ogona, bazowo jedzonko niech wydaje 2 punkty najedzenia
+    var snakeisfed = 0;             // 'najedzenie węża', ilość>=1 znaczy że ogon ma w danej chwili zostać w miejscu- wydłużamy węża
     var foodisplaced = false;       // zmienna pomocnicza dla losowania miejsca jedzenia
     var setfoodpls = false;         // zmienna która spowoduje wylosowanie miejsca jedzenia po wykonaniu ruchu (zapobiega pojawieniu się w                                                                                                                      miejsce ruchu)
     
-    var rows = document.getElementsByClassName("row");
+    var rows = document.getElementsByClassName("row");  // wyznaczenie wszystkich rzędów mapy z drzewa dom
     
     var arena = [];
     
-    arena[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];    // początkowy układ- później 'streść'
+    arena[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];    // początkowy układ- do 'streszczenia'
     arena[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     arena[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     arena[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -67,24 +67,24 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    errorbox.classList.add("hidden");                       // schowanie errorboxa dla błędnego startu
+    errorbox.classList.add("hidden");                       // schowanie errorboxa dla info o błędnym starcie
     
     
     startbutton.addEventListener("click", function(e){      // kliknięcie start!
         
-        if (level == 0){
+        if (level == 0){                                // nie wybrano poziomu trudności
             
             errorbox.classList.remove("hidden");
             
-        } else {
+        } else {                                        // start gry, chowamy elementy z info
             
             errorbox.classList.add("hidden");
             infobox.classList.add("hidden");
             gamestart = true;
             
-            placefood();
-            drawasnake();
-            snakeisrunning();
+            placefood();            // wyznaczenie jedzonka
+            drawasnake();           // narysowanie węża
+            snakeisrunning();       // startuje interwał czasowy
             
         }
         
@@ -103,13 +103,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 levelbuttons[i].style.color = "black";          // nadanie każdemu elementowi domyślnego koloru, na wypadek gdyby już wcześniej                                                                                                     był wybrany
                 
                 
-                    //ZRÓB TO PÓŹNIEJ PRZEZ NADAWANIE KLASY BO PRZEZ TO EFEKT :HOVER DZIAŁA TYLKO RAZ!
+                    //POPRAW PÓŹNIEJ- MA BYĆ PRZEZ NADAWANIE KLASY - PRZEZ BRAK TEGO EFEKT :HOVER DZIAŁA TYLKO RAZ!
                 
             }
             
             this.style.color = "crimson";                       // kolorowanie wybranego levela
             
-            leveltime = this.dataset.lvltime;                           // ustanowienie czasu dla levela
+            leveltime = this.dataset.lvltime;                   // ustanowienie szybkości ruchu dla levela
             level = this.dataset.lvl;
             
         })
@@ -130,10 +130,11 @@ document.addEventListener("DOMContentLoaded", function(){
         timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
                 
             
-            refreshsnake(); // odświeżanie głowy i ogona węża
+            refreshsnake(); // odświeżenie głowy i ogona węża
             
             
             if (direction == 1){            //wąż idzie w GÓRĘ
+                lastmovedirection = 1;
                 
                 if (snakehead[0] == 0 || arena[snakehead[0]-1][snakehead[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
                     
@@ -161,36 +162,74 @@ document.addEventListener("DOMContentLoaded", function(){
         
                 
             } else if (direction == 2){     //wąż idzie w PRAWO
+                lastmovedirection = 2;
                 
-                
-                
-            } else if (direction == 3){     //wąż idzie w DÓŁ
-                
-                if (snakehead[0] == 23 || arena[snakehead[0]+1][snakehead[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
+                if (snakehead[1] == 15 || arena[snakehead[0]][snakehead[1]+1] == 1) {
                     
                     gameover();
                     
-                } else {                //tu się nie zabije
+                } else {   
                     
-                    if (arena[snakehead[0]+1][snakehead[1]] == 2){    //znalazł jedzonko
+                    if (arena[snakehead[0]][snakehead[1]+1] == 2){  
                         snakeisfed = 2;
                         points += level;
                         viewpoints();
-                        setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
+                        setfoodpls = true;
                     }
                     
-                    snake.unshift([snakehead[0]+1,snakehead[1]]); // przedkładamy 'przed' węża nowy jego element
+                    snake.unshift([snakehead[0],snakehead[1]+1]);
+                    refreshsnake(); 
+                    arena[snakehead[0]][snakehead[1]] == 1;
+                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna"; 
                     
-                    refreshsnake();                             // i odświeżamy. pamiętaj by usunąć ostatni, jeśli nienajedzony!
+                }
+                
+            } else if (direction == 3){     //wąż idzie w DÓŁ
+                lastmovedirection = 3;
+                
+                if (snakehead[0] == 23 || arena[snakehead[0]+1][snakehead[1]] == 1) {
                     
-                    arena[snakehead[0]][snakehead[1]] == 1;       //aktualizujemy 'arenę' (tutaj tylko krok do przodu, bez ruchu ogona!)
-                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
+                    gameover();
+                    
+                } else {      
+                    
+                    if (arena[snakehead[0]+1][snakehead[1]] == 2){
+                        snakeisfed = 2;
+                        points += level;
+                        viewpoints();
+                        setfoodpls = true;
+                    }
+                    
+                    snake.unshift([snakehead[0]+1,snakehead[1]]);
+                    refreshsnake();
+                    arena[snakehead[0]][snakehead[1]] == 1;
+                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";
                     
                 }
             
             } else if (direction == 4){     //wąż idzie w LEWO
+                lastmovedirection = 4;
                 
-                
+                if (snakehead[1] == 0 || arena[snakehead[0]][snakehead[1]-1] == 1) {
+                    
+                    gameover();
+                    
+                } else {
+                    
+                    if (arena[snakehead[0]][snakehead[1]-1] == 2){
+                        snakeisfed = 2;
+                        points += level;
+                        viewpoints();
+                        setfoodpls = true;
+                        
+                    }
+                    
+                    snake.unshift([snakehead[0],snakehead[1]-1]); 
+                    refreshsnake(); 
+                    arena[snakehead[0]][snakehead[1]] == 1; 
+                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";
+                    
+                }
                
             }
             
@@ -235,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     
             case 37: // lewo
                 
-                if (direction != 2 && direction != 4){
+                if (lastmovedirection != 2 && lastmovedirection != 4){
                     direction = 4;
                 }
                 
@@ -243,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             case 38: // góra
                 
-                if (direction != 1 && direction != 3){
+                if (lastmovedirection != 1 && lastmovedirection != 3){
                     direction = 1;
                 }
                 
@@ -252,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             case 39: // prawo
                     
-                if (direction != 2 && direction != 4){
+                if (lastmovedirection != 2 && lastmovedirection != 4){
                     direction = 2;
                 }
                     
@@ -260,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             case 40: // dół
                     
-                if (direction != 1 && direction != 3){
+                if (lastmovedirection != 1 && lastmovedirection != 3){
                     direction = 3;
                 }
                     
@@ -305,14 +344,12 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    function drawasnakelite(){
-        
-        
-    }
+    
     
     
     
     function drawasnake(){                      // rysowanie całego węża + żarełka choć to tylko na wszelki wypadek bo to nie działa stąd
+                                                // w zasadzie działa tylko na początek więc później zrób to ręcznie!!
         
         for (var i=0; i<24; i++){               // tu wyliczy każdy rząd
             
@@ -345,6 +382,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     function viewpoints(){                      // tu będziemy aktualizować punkty !!
         
+        pointsbox.innerHTML = points;
         
     }
     
@@ -361,3 +399,4 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
 });
+
