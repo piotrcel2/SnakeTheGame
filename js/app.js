@@ -15,8 +15,10 @@ document.addEventListener("DOMContentLoaded", function(){
     var tail1st = [12, 8];
     var tail2nd = [13, 7];
     
+    var snakeisfed = 0;             // każda '1' zatrzymuje na jeden ciągnięcie się ogona
+    var foodisplaced = false;
+    
     var rows = document.getElementsByClassName("row");
-    console.log(rows);
     
     var arena = [];
     
@@ -61,9 +63,10 @@ document.addEventListener("DOMContentLoaded", function(){
             errorbox.classList.add("hidden");
             infobox.classList.add("hidden");
             gamestart = true;
-            console.log(level + " "  + leveltime)
-            snakeisrunning();
+            
+            placefood();
             drawasnake();
+            snakeisrunning();
             
         }
         
@@ -106,18 +109,14 @@ document.addEventListener("DOMContentLoaded", function(){
     function snakeisrunning(){
         var timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
                 
-            console.log("tak sobie tylko działam"); // funkcja wywoływana co każdy krok!
+            //console.log("tak sobie tylko działam"); // funkcja wywoływana co każdy krok!
+            
+            
+        
             
             
             
-            
-            
-            
-            
-            
-            
-            
-            
+
             
             
             
@@ -128,30 +127,49 @@ document.addEventListener("DOMContentLoaded", function(){
     
 
     
-    document.addEventListener("keyup", (function(e) {
+    document.addEventListener("keydown", (function(e) {
         
         if (gamestart == true){
             
             switch(e.which) {
-            case 37: // left
-                console.log("lewo");
+                    
+            case 37: // lewo
+                
+                if (direction != 2 && direction != 4){
+                    direction = 4;
+                }
+                
             break;
 
-            case 38: // up
-                console.log("góra");
+            case 38: // góra
+                
+                if (direction != 1 && direction != 3){
+                    direction = 1;
+                }
+                
+                    
             break;
 
-            case 39: // right
-                console.log("prawo");
+            case 39: // prawo
+                    
+                if (direction != 2 && direction != 4){
+                    direction = 2;
+                }
+                    
             break;
 
-            case 40: // down
-                console.log("dół");
+            case 40: // dół
+                    
+                if (direction != 1 && direction != 3){
+                    direction = 3;
+                }
+                    
             break;
 
-            default: return; // exit this handler for other keys
+            default: return;
         }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
+            
+        e.preventDefault();
             
         }
         
@@ -161,35 +179,57 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
+    //  Math.floor((Math.random() * 10) + 1)    -random number
     
-    
-    
-    
-    
-    
-    
-    
-    
-    function drawasnake(){                      // rysowanie całego węża
+    function placefood(){           // losowanie miejsca żarełka na mapie
         
-        for (var i=0; i<24; i++){               // tu przejeżdża po każdym rzędzie
+        while (foodisplaced == false) {
             
-            for (var j=0; j<16; j++){           // tu przejeżdża po każdym elemencie w rzędzie
+            
+            var x = Math.floor(Math.random() * 23);
+            var y = Math.floor(Math.random() * 15);
+            
+            if (arena[x][y] == 0){
                 
-                //console.log(arena[i][j]); // dzięki temu wyświetli nam każdą część areny logicznie -0/1
+                arena[x][y] = 2;
+                rows[x].children[y].style.backgroundColor = "olivedrab";
+                foodisplaced = true;
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
+    function drawasnakelite(){
+        
+        
+    }
+    
+    
+    
+    function drawasnake(){                      // rysowanie całego węża + żarełka choć to nie będzie działało tutaj
+        
+        for (var i=0; i<24; i++){               // tu wyliczy każdy rząd
+            
+            for (var j=0; j<16; j++){           // tu wyliczy każdy element każdego rzędu
+                
+                //console.log(arena[i][j]); // dzięki temu wyświetliłoby nam każdą część areny logicznie - 0/1  /2 (żarełko)
                 
                 if (arena[i][j] == 1){
                     
-                    
-                    console.log("znalazłem część węża!");
-                    console.log(rows[i].children[j]);
-                    
                     rows[i].children[j].style.backgroundColor = "sienna";
+                    
+                } else if (arena[i][j] == 2){
+                    
+                    rows[i].children[j].style.backgroundColor = "olivedrab";
                     
                 } else {
                     
                     rows[i].children[j].style.backgroundColor = "antiquewhite";
-                    
+                
                 }
                 
                 
