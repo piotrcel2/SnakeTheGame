@@ -184,13 +184,17 @@ document.addEventListener("DOMContentLoaded", function(){
                 
                 arena[snaketail[0]][snaketail[1]] == 0;     //aktualizujemy 'arenę' - zabieramy ogon
                 rows[snaketail[0]].children[snaketail[1]].style.backgroundColor = "antiquewhite";
-                snake.pop();    // aktualizacja tablicy 'snake'
-                
+                snake.pop();    // aktualizacja tablicy 'snake' - usuwanie ostatniego elementu
+                refreshsnake(); // aktualizujemy głowę i ogon węża
                 
             }
             
-            //sprawdź czy setfoodpls == true żeby wiedzieć czy wywołać losowanie żarcia, jeśli tak to daj na false od razu tutaj
-            
+            if (setfoodpls == true){    // jeśli jest prośba o rozlosowanie miejsca jedzenia- robi to
+                
+                placefood();
+                setfoodpls == false;
+                
+            }
             
 
             
@@ -274,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function(){
             
         }
         
-        foodisplaced = false;
+        foodisplaced = false;   // na przyszłość od razu nastawiam bazowo na false
         
     }
     
@@ -288,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    function drawasnake(){                      // rysowanie całego węża + żarełka choć to nie będzie działało tutaj
+    function drawasnake(){                      // rysowanie całego węża + żarełka choć to tylko na wszelki wypadek bo to nie działa stąd
         
         for (var i=0; i<24; i++){               // tu wyliczy każdy rząd
             
@@ -329,7 +333,6 @@ document.addEventListener("DOMContentLoaded", function(){
     function gameover(){                        // do rozbudowania
         
         gameisover = true;
-        //przerwij interwał tutaj!!
         console.log("przegrałeś!");
         clearInterval(timeon);
         
