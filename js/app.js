@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function(){
     
     arena[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];    // początkowy układ- do 'streszczenia'
     arena[1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    arena[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    arena[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    arena[2] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];            // '1' to część węża
+    arena[3] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];            // '2' to jedzenie
     arena[4] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     arena[5] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     arena[6] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -142,10 +142,14 @@ document.addEventListener("DOMContentLoaded", function(){
                     
                 } else {                //tu się nie zabije
                     
-                    if (arena[snakehead[0]-1][snakehead[1]] == 2){    //znalazł jedzonko
+                    if (arena[snakehead[0]-1][snakehead[1]] == 2){    //sprawdza czy znalazł jedzonko
                         snakeisfed = 2;
                         points += level;
+                        
+                        console.log(level);
+                        console.log(points);
                         viewpoints();
+                        
                         setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
                     }
                     
@@ -221,6 +225,7 @@ document.addEventListener("DOMContentLoaded", function(){
                         points += level;
                         viewpoints();
                         setfoodpls = true;
+                        console.log(points);
                         
                     }
                     
@@ -248,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 
             }
             
-            if (setfoodpls == true){    // jeśli jest prośba o rozlosowanie miejsca jedzenia- robi to
+            if (setfoodpls == true){    // jeśli jest prośba o rozlosowanie miejsca jedzenia- robi to i od razu poźniej POWINNO tę prośbę skasować
                 
                 placefood();
                 setfoodpls == false;
@@ -317,8 +322,6 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    
-    //  Math.floor((Math.random() * 10) + 1)    -random number
     
     function placefood(){           // losowanie miejsca żarełka na mapie
         
