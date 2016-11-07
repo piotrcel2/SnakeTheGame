@@ -95,10 +95,30 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
     function snakeisrunning(){
         var timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
                 
-            console.log("tak sobie tylko działam");
+            console.log("tak sobie tylko działam"); // funkcja wywoływana co każdy krok!
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             
         }, leveltime); // czas wyznaczony przez lvl   
@@ -108,15 +128,55 @@ document.addEventListener("DOMContentLoaded", function(){
     
 
     
-    function drawasnake(){
+    document.addEventListener("keyup", (function(e) {
+        
+        if (gamestart == true){
+            
+            switch(e.which) {
+            case 37: // left
+                console.log("lewo");
+            break;
+
+            case 38: // up
+                console.log("góra");
+            break;
+
+            case 39: // right
+                console.log("prawo");
+            break;
+
+            case 40: // down
+                console.log("dół");
+            break;
+
+            default: return; // exit this handler for other keys
+        }
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+            
+        }
+        
+        
+    }));
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    function drawasnake(){                      // rysowanie całego węża
         
         for (var i=0; i<24; i++){               // tu przejeżdża po każdym rzędzie
             
-            
-            
             for (var j=0; j<16; j++){           // tu przejeżdża po każdym elemencie w rzędzie
                 
-                //console.log(arena[i][j]); // dzięki temu wyświetli nam każdą część areny
+                //console.log(arena[i][j]); // dzięki temu wyświetli nam każdą część areny logicznie -0/1
                 
                 if (arena[i][j] == 1){
                     
@@ -139,6 +199,8 @@ document.addEventListener("DOMContentLoaded", function(){
         }
         
     };
+    
+    
     
     
 });
