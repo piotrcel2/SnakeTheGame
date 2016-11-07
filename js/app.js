@@ -5,27 +5,36 @@ document.addEventListener("DOMContentLoaded", function(){
     var levelbuttons = document.getElementsByClassName("lvl");
     var infobox = document.getElementById("infobox");
     
-    var snakelength = 3;
+    var timeon; // deklaracja zmiennej odpowiedzialną za funkcję interwałową
+    
     var points = 0;
     var direction = 1; // 1-up, 2-right, 3-down, 4-left
     var gamestart = false;
     var gameisover = false;
     var leveltime = 0;
     var level = 0;
-    var head = [11, 7];                 // współrzędne w kolejności -Y X
-    var tail1st = [12, 7];
-    var tail2nd = [13, 7];
     
     var snake = [];
     
-    snake[0] = [11, 7];     // - snake[0] = głowa węża
-    snake[1] = [12, 7];     // - snake[snake.length-2] = przedostatni element
+    snake[0] = [11, 7];     // - snake[0] = głowa węża                          -- współrzędne w kolejności -Y X
+    snake[1] = [12, 7];     // - snake[snake.length-2] = przedostatni element               czyli rząd -> kolumna
     snake[2] = [13, 7];     // - snake[snake.length-1] = dupa węża 
     
+    console.log(snake);
     
-    var snakeisfed = 0;             // każda '1' zatrzymuje na jeden ciągnięcie się ogona
-    var foodisplaced = false;
-    var setfoodpls = false;
+    
+    var snakehead = snake[0];
+    var snaketail = snake[snake.length-1];      // oznaczenie snakehead i snaketail!!!!
+    
+    function refreshsnake(){            // wywołuj gdy potrzeba!
+        snakehead = snake[0];                   // to samo co wyżej
+        snaketail = snake[snake.length-1];
+    }
+    
+    
+    var snakeisfed = 0;             // każda liczba zatrzymuje ruch ogona, bazowo jedzonko niech wydaje 2 punkty najedzenia
+    var foodisplaced = false;       // zmienna pomocnicza dla losowania miejsca jedzenia
+    var setfoodpls = false;         // zmienna która spowoduje wylosowanie miejsca jedzenia po wykonaniu ruchu (zapobiega pojawieniu się w                                                                                                                      miejsce ruchu)
     
     var rows = document.getElementsByClassName("row");
     
@@ -91,7 +100,10 @@ document.addEventListener("DOMContentLoaded", function(){
         
             for (var i=0; i<levelbuttons.length; i++){
                 
-                levelbuttons[i].style.color = "black";          // nadanie każdemu elementowi domyślnego koloru, na wypadek gdyby już wcześniej był wybrany
+                levelbuttons[i].style.color = "black";          // nadanie każdemu elementowi domyślnego koloru, na wypadek gdyby już wcześniej                                                                                                     był wybrany
+                
+                
+                    //ZRÓB TO PÓŹNIEJ PRZEZ NADAWANIE KLASY BO PRZEZ TO EFEKT :HOVER DZIAŁA TYLKO RAZ!
                 
             }
             
@@ -112,38 +124,38 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    /*
-                (head[0]); - rząd głowy węża
-                (head[1]); - kolumna głowy węża */
     
     
     function snakeisrunning(){
-        var timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
+        timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
                 
             
+            refreshsnake(); // odświeżanie głowy i ogona węża
             
-            
-            //console.log("tak sobie tylko działam"); // funkcja wywoływana co każdy krok!
             
             if (direction == 1){            //wąż idzie w górę
                 
-                if (head[0] == 0 || arena[head[0]-1][head[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
+                if (snakehead[0] == 0 || arena[snakehead[0]-1][snakehead[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
                     
                     gameover();
                     
                 } else {                //tu się nie zabije
                     
-                    if (arena[head[0]-1][head[1]] == 2){    //znalazł jedzonko
+                    if (arena[snakehead[0]-1][snakehead[1]] == 2){    //znalazł jedzonko
                         snakeisfed = 2;
                         points += level;
                         viewpoints();
                         setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
                     }
                     
-                    head[0] -= 1;       // przesuwamy index głowy węża o 1 rząd do góry
-                    arena[head[0]][head[1]] == 1;       //aktualizujemy arenę (tutaj tylko krok do przodu, bez ruchu ogona!)
-                    rows[head[0]].children[head[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
+                    snake.unshift([snakehead[0]-1,snakehead[1]]); // przedkładamy 'przed' węża nowy jego element
                     
+                    refreshsnake();                             // i odświeżamy. pamiętaj by usunąć ostatni, jeśli nienajedzony!
+                                                                    // 'snake' zaktualizowany
+                    arena[snakehead[0]][snakehead[1]] == 1;       //aktualizujemy 'arenę' (tutaj tylko krok do przodu, bez ruchu ogona!)
+                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
+                    
+                    //COFANIE OGONA PÓŹNIEJ!
                 }
                     
         
@@ -162,26 +174,29 @@ document.addEventListener("DOMContentLoaded", function(){
                
             }
             
-            //dalsze poczynania węża - cofanie ogona
+            //dalsze poczynania węża + cofanie ogona
+            
             if (snakeisfed > 0){    // tu nie cofamy ogona, bo wąż jest najedzony
                 
-                snakelength += 1; //dodajemy długość węża- nie wiem jeszcze czy to się przyda
                 snakeisfed -= 1;
                 
             } else {                // cofamy ogon
                 
+                arena[snaketail[0]][snaketail[1]] == 0;     //aktualizujemy 'arenę' - zabieramy ogon
+                rows[snaketail[0]].children[snaketail[1]].style.backgroundColor = "antiquewhite";
+                snake.pop();    // aktualizacja tablicy 'snake'
                 
                 
             }
             
-            //sprawdź czy setfoodpls == true żeby wiedzieć czy wywołać losowanie żarcia, jeśli tak to daj na false od razu
+            //sprawdź czy setfoodpls == true żeby wiedzieć czy wywołać losowanie żarcia, jeśli tak to daj na false od razu tutaj
             
             
 
             
             
             
-        }, leveltime); // czas wyznaczony przez lvl   
+        }, leveltime); // czas wyznaczony przez wybrany lvl   
     }
     
     
@@ -315,7 +330,8 @@ document.addEventListener("DOMContentLoaded", function(){
         
         gameisover = true;
         //przerwij interwał tutaj!!
-        console.log("przegrałeś!");     
+        console.log("przegrałeś!");
+        clearInterval(timeon);
         
     }
     
