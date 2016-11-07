@@ -13,8 +13,15 @@ document.addEventListener("DOMContentLoaded", function(){
     var leveltime = 0;
     var level = 0;
     var head = [11, 7];                 // współrzędne w kolejności -Y X
-    var tail1st = [12, 8];
+    var tail1st = [12, 7];
     var tail2nd = [13, 7];
+    
+    var snake = [];
+    
+    snake[0] = [11, 7];     // - snake[0] = głowa węża
+    snake[1] = [12, 7];     // - snake[snake.length-2] = przedostatni element
+    snake[2] = [13, 7];     // - snake[snake.length-1] = dupa węża 
+    
     
     var snakeisfed = 0;             // każda '1' zatrzymuje na jeden ciągnięcie się ogona
     var foodisplaced = false;
