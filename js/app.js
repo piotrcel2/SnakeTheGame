@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function(){
             refreshsnake(); // odświeżanie głowy i ogona węża
             
             
-            if (direction == 1){            //wąż idzie w górę
+            if (direction == 1){            //wąż idzie w GÓRĘ
                 
                 if (snakehead[0] == 0 || arena[snakehead[0]-1][snakehead[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
                     
@@ -160,15 +160,35 @@ document.addEventListener("DOMContentLoaded", function(){
                     
         
                 
-            } else if (direction == 2){     //wąż idzie w prawo
+            } else if (direction == 2){     //wąż idzie w PRAWO
                 
                 
                 
-            } else if (direction == 3){     //wąż idzie w dół
+            } else if (direction == 3){     //wąż idzie w DÓŁ
                 
-                
+                if (snakehead[0] == 23 || arena[snakehead[0]+1][snakehead[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
+                    
+                    gameover();
+                    
+                } else {                //tu się nie zabije
+                    
+                    if (arena[snakehead[0]+1][snakehead[1]] == 2){    //znalazł jedzonko
+                        snakeisfed = 2;
+                        points += level;
+                        viewpoints();
+                        setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
+                    }
+                    
+                    snake.unshift([snakehead[0]+1,snakehead[1]]); // przedkładamy 'przed' węża nowy jego element
+                    
+                    refreshsnake();                             // i odświeżamy. pamiętaj by usunąć ostatni, jeśli nienajedzony!
+                    
+                    arena[snakehead[0]][snakehead[1]] == 1;       //aktualizujemy 'arenę' (tutaj tylko krok do przodu, bez ruchu ogona!)
+                    rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
+                    
+                }
             
-            } else if (direction == 4){     //wąż idzie w lewo
+            } else if (direction == 4){     //wąż idzie w LEWO
                 
                 
                
@@ -323,7 +343,7 @@ document.addEventListener("DOMContentLoaded", function(){
     };
     
     
-    function viewpoints(){                      // tu będziemy aktualizować punkty
+    function viewpoints(){                      // tu będziemy aktualizować punkty !!
         
         
     }
