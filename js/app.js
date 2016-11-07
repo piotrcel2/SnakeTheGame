@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var points = 0;
     var direction = 1; // 1-up, 2-right, 3-down, 4-left
     var gamestart = false;
+    var gameisover = false;
     var leveltime = 0;
     var level = 0;
     var head = [11, 7];                 // współrzędne w kolejności -Y X
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     var snakeisfed = 0;             // każda '1' zatrzymuje na jeden ciągnięcie się ogona
     var foodisplaced = false;
+    var setfoodpls = false;
     
     var rows = document.getElementsByClassName("row");
     
@@ -103,17 +105,69 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
-    
+    /*
+                (head[0]); - rząd głowy węża
+                (head[1]); - kolumna głowy węża */
     
     
     function snakeisrunning(){
         var timeon = setInterval(function () {  // FUNKCJA CHODZENIA WĘŻA !!
                 
+            
+            
+            
             //console.log("tak sobie tylko działam"); // funkcja wywoływana co każdy krok!
             
-            
+            if (direction == 1){            //wąż idzie w górę
+                
+                if (head[0] == 0 || arena[head[0]-1][head[1]] == 1) {     // uderzy głową w ścianę LUB w samego siebie - gameover
+                    
+                    gameover();
+                    
+                } else {                //tu się nie zabije
+                    
+                    if (arena[head[0]-1][head[1]] == 2){    //znalazł jedzonko
+                        snakeisfed = 2;
+                        points += level;
+                        viewpoints();
+                        setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
+                    }
+                    
+                    head[0] -= 1;       // przesuwamy index głowy węża o 1 rząd do góry
+                    arena[head[0]][head[1]] == 1;       //aktualizujemy arenę (tutaj tylko krok do przodu, bez ruchu ogona!)
+                    rows[head[0]].children[head[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
+                    
+                }
+                    
         
+                
+            } else if (direction == 2){     //wąż idzie w prawo
+                
+                
+                
+            } else if (direction == 3){     //wąż idzie w dół
+                
+                
             
+            } else if (direction == 4){     //wąż idzie w lewo
+                
+                
+               
+            }
+            
+            //dalsze poczynania węża - cofanie ogona
+            if (snakeisfed > 0){    // tu nie cofamy ogona, bo wąż jest najedzony
+                
+                snakelength += 1; //dodajemy długość węża- nie wiem jeszcze czy to się przyda
+                snakeisfed -= 1;
+                
+            } else {                // cofamy ogon
+                
+                
+                
+            }
+            
+            //sprawdź czy setfoodpls == true żeby wiedzieć czy wywołać losowanie żarcia, jeśli tak to daj na false od razu
             
             
 
@@ -186,17 +240,19 @@ document.addEventListener("DOMContentLoaded", function(){
         while (foodisplaced == false) {
             
             
-            var x = Math.floor(Math.random() * 23);
-            var y = Math.floor(Math.random() * 15);
+            var y = Math.floor(Math.random() * 23);
+            var x = Math.floor(Math.random() * 15);
             
-            if (arena[x][y] == 0){
+            if (arena[y][x] == 0){  
                 
-                arena[x][y] = 2;
-                rows[x].children[y].style.backgroundColor = "olivedrab";
+                arena[y][x] = 2;
+                rows[y].children[x].style.backgroundColor = "olivedrab";
                 foodisplaced = true;
             }
             
         }
+        
+        foodisplaced = false;
         
     }
     
@@ -240,6 +296,21 @@ document.addEventListener("DOMContentLoaded", function(){
         
     };
     
+    
+    function viewpoints(){                      // tu będziemy aktualizować punkty
+        
+        
+    }
+    
+    
+    
+    function gameover(){                        // do rozbudowania
+        
+        gameisover = true;
+        //przerwij interwał tutaj!!
+        console.log("przegrałeś!");     
+        
+    }
     
     
     
