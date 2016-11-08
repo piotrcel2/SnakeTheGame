@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function(){
             
             errorbox.classList.add("hidden");
             infobox.classList.add("hidden");
+            level = parseInt(level);
             gamestart = true;
             
             placefood();            // wyznaczenie jedzonka
