@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     
                     refreshsnake();                             // i odświeżamy. pamiętaj by usunąć ostatni, jeśli nienajedzony!
                                                                     // 'snake' zaktualizowany
-                    arena[snakehead[0]][snakehead[1]] == 1;       //aktualizujemy 'arenę' (tutaj tylko krok do przodu, bez ruchu ogona!)
+                    arena[snakehead[0]][snakehead[1]] = 1;       //aktualizujemy 'arenę' (tutaj tylko krok do przodu, bez ruchu ogona!)
                     rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";   //aktualizujemy kolor mapy w nachodzonym polu
                     
                     //COFANIE OGONA PÓŹNIEJ!
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     
                     snake.unshift([snakehead[0],snakehead[1]+1]);
                     refreshsnake(); 
-                    arena[snakehead[0]][snakehead[1]] == 1;
+                    arena[snakehead[0]][snakehead[1]] = 1;
                     rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna"; 
                     
                 }
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     
                     snake.unshift([snakehead[0]+1,snakehead[1]]);
                     refreshsnake();
-                    arena[snakehead[0]][snakehead[1]] == 1;
+                    arena[snakehead[0]][snakehead[1]] = 1;
                     rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";
                     
                 }
@@ -226,13 +226,12 @@ document.addEventListener("DOMContentLoaded", function(){
                         points += level;
                         viewpoints();
                         setfoodpls = true;
-                        console.log(points);
                         
                     }
                     
                     snake.unshift([snakehead[0],snakehead[1]-1]); 
                     refreshsnake(); 
-                    arena[snakehead[0]][snakehead[1]] == 1; 
+                    arena[snakehead[0]][snakehead[1]] = 1; 
                     rows[snakehead[0]].children[snakehead[1]].style.backgroundColor = "sienna";
                     
                 }
@@ -247,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 
             } else {                // cofamy ogon
                 
-                arena[snaketail[0]][snaketail[1]] == 0;     //aktualizujemy 'arenę' - zabieramy ogon
+                arena[snaketail[0]][snaketail[1]] = 0;     //aktualizujemy 'arenę' - zabieramy ogon
                 rows[snaketail[0]].children[snaketail[1]].style.backgroundColor = "antiquewhite";
                 snake.pop();    // aktualizacja tablicy 'snake' - usuwanie ostatniego elementu
                 refreshsnake(); // aktualizujemy głowę i ogon węża
@@ -257,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function(){
             if (setfoodpls == true){    // jeśli jest prośba o rozlosowanie miejsca jedzenia- robi to i od razu poźniej POWINNO tę prośbę skasować
                 
                 placefood();
-                setfoodpls == false;
+                setfoodpls = false;
                 
             }
             
