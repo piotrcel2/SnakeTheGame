@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     var points = 0;
     var direction = 1; // 1-up, 2-right, 3-down, 4-left
-    var lastmovedirection = 1;  // ma zapobiec przełączeniu ruchu typu 'prawo -> dół,lewo między ruchem węża) zapamiętuje ostatni krok
+    var lastmovedirection = 1;  // ma zapobiec przełączeniu ruchu typu 'prawo -> dół,lewo' między ruchem węża -zapamiętuje ostatni krok
     var gamestart = false;
     var gameisover = false;
     var leveltime = 0;      // zmienna wyznaczająca czas (ms) między ruchami węża
@@ -247,7 +247,9 @@ document.addEventListener("DOMContentLoaded", function(){
             } else {                // cofamy ogon
                 
                 arena[snaketail[0]][snaketail[1]] = 0;     //aktualizujemy 'arenę' - zabieramy ogon
-                rows[snaketail[0]].children[snaketail[1]].style.backgroundColor = "antiquewhite";
+                if ( gameisover==false ){
+                    rows[snaketail[0]].children[snaketail[1]].style.backgroundColor = "antiquewhite";
+                }
                 snake.pop();    // aktualizacja tablicy 'snake' - usuwanie ostatniego elementu
                 refreshsnake(); // aktualizujemy głowę i ogon węża
                 
@@ -352,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     function drawasnake(){                      // rysowanie całego węża + żarełka choć to tylko na wszelki wypadek bo to nie działa stąd
-                                                // w zasadzie działa tylko na początek więc później zrób to ręcznie!!
+                                                // w zasadzie działa tylko na początek więc równie dobrze mógłbym pokolorować ręcznie i byłoby szybciej
         
         for (var i=0; i<24; i++){               // tu wyliczy każdy rząd
             
@@ -394,8 +396,237 @@ document.addEventListener("DOMContentLoaded", function(){
     function gameover(){                        // do rozbudowania
         
         gameisover = true;
-        console.log("przegrałeś!");
         clearInterval(timeon);
+        
+        var x = 15;
+        var y = 23;
+        var gmolevel = 0;
+        
+        var interval1 = setInterval(function (){
+            
+        rows[y].children[x].style.backgroundColor = "sienna";
+            
+            if (gmolevel == 0){              // pierwszy dolny poziom
+                x -= 1;
+                if (x == 0){
+                    gmolevel += 1;
+                }
+                
+            }   else if (gmolevel == 1){
+                y -= 1;
+                if (y == 0){
+                    gmolevel += 1;
+                }
+                
+            }   else if (gmolevel == 2){  
+                x += 1;
+                if (x == 15){
+                    gmolevel += 1;
+                }
+                
+            }   else if (gmolevel == 3){
+                y += 1;
+                if (y == 22){
+                    gmolevel += 1;
+                }
+                
+            }   else if (gmolevel == 4){
+                x -= 1;
+                if (x == 1){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 5){
+                y -= 1;
+                if (y == 1){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 6){
+                x += 1;
+                if (x == 14){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 7){
+                y += 1;
+                if (y == 21){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 8){
+                x -= 1;
+                if (x == 2){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 9){
+                y -= 1;
+                if (y == 2){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 10){
+                x += 1;
+                if (x == 13){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 11){
+                y += 1;
+                if (y == 20){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 12){
+                x -= 1;
+                if (x == 3){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 13){
+                y -= 1;
+                if (y == 3){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 14){
+                x += 1;
+                if (x == 12){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 15){
+                y += 1;
+                if (y == 19){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 16){
+                x -= 1;
+                if (x == 4){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 17){
+                y -= 1;
+                if (y == 4){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 18){
+                x += 1;
+                if (x == 11){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 19){
+                y += 1;
+                if (y == 18){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 20){
+                x -= 1;
+                if (x == 5){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 21){
+                y -= 1;
+                if (y == 5){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 22){
+                x += 1;
+                if (x == 10){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 23){
+                y += 1;
+                if (y == 17){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 24){
+                x -= 1;
+                if (x == 6){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 25){
+                y -= 1;
+                if (y == 6){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 26){
+                x += 1;
+                if (x == 9){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 27){
+                y += 1;
+                if (y == 16){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 28){
+                x -= 1;
+                if (x == 7){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 29){
+                y -= 1;
+                if (y == 7){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 30){
+                x += 1;
+                if (x == 8){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 31){
+                y += 1;
+                if (y == 15){
+                    gmolevel +=1;
+                }
+                
+            }   else if (gmolevel == 32){
+                gmolevel += 1;
+            
+            }
+            
+            
+            
+        
+            
+        }, 20);
+    
+        
+        
+        /*
+        var timeout = setTimeout(function () {  // do wywalenia, tylko test i porownywacz
+            for (var j=15; j>= 0; j--){
+            
+                rows[22].children[j].style.backgroundColor = "sienna";
+
+            }
+        }, 1000);
+        */
+        
+        
+        
+        
+        
+        
+        console.log("przegrałeś!");
         
     }
     
