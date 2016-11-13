@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(){
     
     snake[0] = [11, 7];     // - snake[0] = głowa węża                          -- współrzędne w kolejności -Y X
     snake[1] = [12, 7];     // - snake[snake.length-2] = przedostatni element               czyli rząd -> kolumna
-    snake[2] = [13, 7];     // - snake[snake.length-1] = dupa węża 
+    snake[2] = [13, 7];     // - snake[snake.length-1] = ogon węża 
     
     
     var snakehead = snake[0];
@@ -149,8 +149,6 @@ document.addEventListener("DOMContentLoaded", function(){
                         snakeisfed = 2;
                         points += level;
                         
-                        console.log(level);
-                        console.log(points);
                         viewpoints();
                         
                         setfoodpls = true;  // umieszczanie jedzenia dajemy po ruchu gracza
@@ -354,10 +352,10 @@ document.addEventListener("DOMContentLoaded", function(){
     
     
     
+    // NIŻEJ funkcja niepotrzebna. rysuje dowolmy układ ale działa tylko przy rozpoczęciu gry więc równie dobrze mógłbym to zrobić ręcznie
     
     function drawasnake(){                      // rysowanie całego węża + żarełka choć to tylko na wszelki wypadek bo to nie działa stąd
-                                                // w zasadzie działa tylko na początek więc równie dobrze mógłbym pokolorować ręcznie i byłoby szybciej
-        
+                                                    
         for (var i=0; i<24; i++){               // tu wyliczy każdy rząd
             
             for (var j=0; j<16; j++){           // tu wyliczy każdy element każdego rzędu
