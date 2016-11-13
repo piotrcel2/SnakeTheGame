@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function(){
     var levelbuttons = document.getElementsByClassName("lvl");
     var infobox = document.getElementById("infobox");
     var pointsbox = document.getElementById("points");
+    var container = document.getElementById("container");
+    var mainpointsbox = document.getElementById("pointsbox");
     
     var timeon; // deklaracja zmiennej odpowiedzialną za funkcję interwałową
     
@@ -600,30 +602,26 @@ document.addEventListener("DOMContentLoaded", function(){
                 
             }   else if (gmolevel == 32){
                 gmolevel += 1;
+                
             
+            }   else {
+                showpoints();
+                clearInterval(interval1);
+                
             }
             
             
             
         
             
-        }, 20);
+        }, 6);
     
+        function showpoints(){
+            mainpointsbox.classList.add("pointsmax");
+        }
         
         
-        /*
-        var timeout = setTimeout(function () {  // do wywalenia, tylko test i porownywacz
-            for (var j=15; j>= 0; j--){
-            
-                rows[22].children[j].style.backgroundColor = "sienna";
-
-            }
-        }, 1000);
-        */
-        
-        
-        
-        
+       
         
         
         console.log("przegrałeś!");

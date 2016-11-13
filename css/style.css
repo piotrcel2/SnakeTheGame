@@ -12,7 +12,7 @@ body {
     background-color: darkseagreen;
 }
 
-.pointsbox {
+#pointsbox {
     
     margin: auto;
     width: 256px;
@@ -27,13 +27,24 @@ body {
     text-align: center;
 }
 
-.container {
+#container {
     
     margin: auto;
     width: 256px;
     height: 384px;
     background-color: antiquewhite;
 }
+
+
+.pointsmax {
+    
+    z-index: 1;
+    position: relative;
+    transform: rotate(10deg) translate(170px, 200px) scale(1.8);
+    transition: 2s;
+    
+}
+
 
 .row {
     
@@ -47,8 +58,6 @@ body {
     
     width: 16px;
     height: 100%;
-    border-right: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
     
 }
 
